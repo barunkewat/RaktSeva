@@ -10,26 +10,18 @@ import {
   MdInfoOutline,
   MdPhone,
   MdOutlineBloodtype,
-  MdHistory,
   MdLogout,
 } from "react-icons/md";
 
 import { FiChevronDown } from "react-icons/fi";
 
-import { IoSettingsOutline } from "react-icons/io5";
-import { SiGoogleanalytics } from "react-icons/si";
+import { getProfileMenuItems } from "./Menus/userMenu";
 
 const navLinks = [
   { to: "/blood", icon: BiSolidDonateBlood, label: "Donate Blood" },
   { to: "/help", icon: MdSupportAgent, label: "Need Help" },
   { to: "/about", icon: MdInfoOutline, label: "About Us" },
   { to: "/contact", icon: MdPhone, label: "Contact Us" },
-];
-
-const menuItems = [
-  { icon: SiGoogleanalytics, label: "Analytics", to: "/analytics" },
-  { icon: MdHistory, label: "Donation History", to: "/history" },
-  { icon: IoSettingsOutline, label: "Settings", to: "/settings" },
 ];
 
 const roleLabels = {
@@ -93,7 +85,7 @@ function HamburgerButton({ open, onClick, className = "" }) {
   );
 }
 
-export default function Navbar({ onToggleSidebar, isSidebarOpen }) {
+export default function Navbar() {
   const [scrolled, setScrolled] = useState(false);
   const [profileOpen, setProfileOpen] = useState(false);
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
@@ -104,6 +96,7 @@ export default function Navbar({ onToggleSidebar, isSidebarOpen }) {
   const role = user?.role ?? "user";
   const roleLabel = roleLabels[role];
   const displayName = getDisplayName(user);
+  const profileMenuItems = getProfileMenuItems(user?.role);
 
   useLenis(({ scroll }) => {
     setScrolled(scroll > 50);
@@ -119,6 +112,21 @@ export default function Navbar({ onToggleSidebar, isSidebarOpen }) {
     document.addEventListener("mousedown", handleOutsideClick);
 
     return () => document.removeEventListener("mousedown", handleOutsideClick);
+  }, []);
+
+  useEffect(() => {
+    document.body.style.overflow = mobileMenuOpen ? "hidden" : "";
+    return () => {
+      document.body.style.overflow = "";
+    };
+  }, [mobileMenuOpen]);
+
+  useEffect(() => {
+    const handleResize = () => {
+      if (window.innerWidth >= 768) setMobileMenuOpen(false);
+    };
+    window.addEventListener("resize", handleResize);
+    return () => window.removeEventListener("resize", handleResize);
   }, []);
 
   const handleLogout = () => {
@@ -150,7 +158,7 @@ export default function Navbar({ onToggleSidebar, isSidebarOpen }) {
 
             <NavLink
               to="/"
-              className="text-xl sm:text-2xl font-bold tracking-tight text-primary-dark whitespace-nowrap"
+              className="text-lg sm:text-2xl font-bold tracking-tight text-primary-dark whitespace-nowrap"
             >
               RaktSeva
             </NavLink>
@@ -160,7 +168,7 @@ export default function Navbar({ onToggleSidebar, isSidebarOpen }) {
           {/* DESKTOP NAV LINKS */}
           {/* ---------------------------------- */}
 
-          <div className="hidden lg:flex items-center">
+          <div className="hidden md:flex items-center flex-wrap justify-center">
             {navLinks.map((link) => {
               const Icon = link.icon;
 
@@ -169,10 +177,10 @@ export default function Navbar({ onToggleSidebar, isSidebarOpen }) {
                   key={link.to}
                   to={link.to}
                   className={({ isActive }) =>
-                    `flex items-center gap-1 p-2 rounded-full text-sm xl:text-lg font-medium tracking-tight transition-all duration-200 ${
+                    `flex items-center gap-1 p-1.5 sm:p-2 text-xs sm:text-sm lg:text-base font-medium tracking-tight transition-colors duration-200 ${
                       isActive
-                        ? "bg-primary-green/10 text-primary-green"
-                        : "text-primary-dark"
+                        ? "text-primary-green"
+                        : "text-primary-dark/50"
                     }`
                   }
                 >
@@ -265,7 +273,7 @@ export default function Navbar({ onToggleSidebar, isSidebarOpen }) {
                   {/* MENU ITEMS */}
 
                   <div className="py-2">
-                    {menuItems.map((item) => {
+                    {profileMenuItems.map((item) => {
                       const Icon = item.icon;
 
                       return (
@@ -308,23 +316,13 @@ export default function Navbar({ onToggleSidebar, isSidebarOpen }) {
             </div>
 
             {/* ---------------------------------- */}
-            {/* SIDEBAR TOGGLE */}
-            {/* ---------------------------------- */}
-
-            <HamburgerButton
-              open={isSidebarOpen}
-              onClick={onToggleSidebar}
-              className="cursor-pointer"
-            />
-
-            {/* ---------------------------------- */}
             {/* MOBILE NAV MENU TOGGLE */}
             {/* ---------------------------------- */}
 
             <HamburgerButton
               open={mobileMenuOpen}
               onClick={() => setMobileMenuOpen((prev) => !prev)}
-              className="lg:hidden"
+              className="md:hidden"
             />
           </div>
         </div>
@@ -335,8 +333,11 @@ export default function Navbar({ onToggleSidebar, isSidebarOpen }) {
       {/* ---------------------------------- */}
 
       {mobileMenuOpen && (
-        <div className="lg:hidden border-t border-primary-green/10 bg-primary-light shadow-xl">
-          <div className="p-4 flex flex-col gap-2">
+        <div className="md:hidden border-t border-primary-green/10 bg-primary-light shadow-xl max-h-[calc(100dvh-4rem)] overflow-y-auto">
+          <div className="p-4 flex flex-col gap-1">
+            <p className="px-3 pt-1 pb-2 text-xs font-semibold uppercase tracking-wider text-primary-dark/40">
+              Pages
+            </p>
             {navLinks.map((link) => {
               const Icon = link.icon;
 
@@ -346,10 +347,10 @@ export default function Navbar({ onToggleSidebar, isSidebarOpen }) {
                   to={link.to}
                   onClick={() => setMobileMenuOpen(false)}
                   className={({ isActive }) =>
-                    `flex items-center gap-3 p-3 rounded-xl text-sm font-medium transition-all duration-200 ${
+                    `flex items-center gap-3 p-3 rounded-xl text-sm font-medium transition-colors duration-200 ${
                       isActive
-                        ? "bg-primary-green/10 text-primary-green"
-                        : "text-primary-dark hover:bg-primary-green/10"
+                        ? "text-primary-green"
+                        : "text-primary-dark/50"
                     }`
                   }
                 >
@@ -359,6 +360,36 @@ export default function Navbar({ onToggleSidebar, isSidebarOpen }) {
                 </NavLink>
               );
             })}
+
+            {profileMenuItems.length > 0 && (
+              <>
+                <div className="my-2 border-t border-primary-green/10" />
+                <p className="px-3 py-2 text-xs font-semibold uppercase tracking-wider text-primary-dark/40">
+                  Dashboard
+                </p>
+                {profileMenuItems.map((item) => {
+                  const Icon = item.icon;
+
+                  return (
+                    <NavLink
+                      key={item.to}
+                      to={item.to}
+                      onClick={() => setMobileMenuOpen(false)}
+                      className={({ isActive }) =>
+                        `flex items-center gap-3 p-3 rounded-xl text-sm font-medium transition-colors duration-200 ${
+                          isActive
+                            ? "text-primary-green"
+                            : "text-primary-dark/50"
+                        }`
+                      }
+                    >
+                      <Icon size={18} />
+                      {item.label}
+                    </NavLink>
+                  );
+                })}
+              </>
+            )}
           </div>
         </div>
       )}

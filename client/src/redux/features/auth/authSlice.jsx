@@ -1,5 +1,5 @@
 import { createSlice } from "@reduxjs/toolkit";
-import { userLogin, userRegister, getCurrentUser } from "../../../services/authActions";
+import { userLogin, userRegister, getCurrentUser, updateProfile } from "../../../services/authActions";
 
 const token = localStorage.getItem("token")
   ? localStorage.getItem("token")
@@ -8,7 +8,7 @@ const token = localStorage.getItem("token")
 const initialState = {
   loading: false,
   user: null,
-  token: null,
+  token: token,
   error: null,
 };
 
@@ -53,10 +53,24 @@ const authSlice = createSlice({
     });
     builder.addCase(getCurrentUser.fulfilled, (state, { payload }) => {
       state.loading = false;
-      // state.success = payload.user;
       state.user = payload.user;
+      state.token = localStorage.getItem("token");
     });
     builder.addCase(getCurrentUser.rejected, (state, { payload }) => {
+      state.loading = false;
+      state.error = payload;
+    });
+
+    // === Update Profile ===
+    builder.addCase(updateProfile.pending, (state) => {
+      state.loading = true;
+      state.error = null;
+    });
+    builder.addCase(updateProfile.fulfilled, (state, { payload }) => {
+      state.loading = false;
+      state.user = payload.user;
+    });
+    builder.addCase(updateProfile.rejected, (state, { payload }) => {
       state.loading = false;
       state.error = payload;
     });

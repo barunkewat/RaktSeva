@@ -1,28 +1,12 @@
-import { useState } from "react";
-
 import Navbar from "./Navbar";
-import Sidebar from "./Sidebar";
 
 export default function Layout({ children }) {
-  const [sidebarOpen, setSidebarOpen] = useState(false);
-
-  const handleToggleSidebar = () => {
-    setSidebarOpen((prev) => !prev);
-  };
-
   return (
     <>
-      <Navbar
-        onToggleSidebar={handleToggleSidebar}
-        isSidebarOpen={sidebarOpen}
-      />
+      <Navbar />
 
-      <div className="flex gap-8">
-        <Sidebar isOpen={sidebarOpen} />
-
-        <div className="flex-1 px-10">
-          {children}
-        </div>
+      <div className="w-full max-w-7xl mx-auto px-4 sm:px-6 lg:px-10 pb-8 sm:pb-12 overflow-x-hidden">
+        {children}
       </div>
     </>
   );

@@ -1,5 +1,10 @@
 import express from "express";
-import { registerController, loginController, currentUserController } from "../controllers/authController.js";
+import {
+  registerController,
+  loginController,
+  currentUserController,
+  updateProfileController,
+} from "../controllers/authController.js";
 import authMiddleware from "../middlewares/authMiddleware.js";
 
 const router = express.Router();
@@ -13,5 +18,8 @@ router.post("/login", loginController);
 
 // === Get current user || GET ===
 router.get("/current-user", authMiddleware, currentUserController);
+
+// === Update profile || PUT ===
+router.put("/update-profile", authMiddleware, updateProfileController);
 
 export default router;

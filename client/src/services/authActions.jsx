@@ -13,7 +13,7 @@ export const userLogin = createAsyncThunk(
         localStorage.setItem("token", data.token);
         toast.success(data.message);
         setTimeout(() => {
-          window.location.replace("/");
+          window.location.replace("/blood");
         }, 2000);
       }
       return data;
@@ -76,7 +76,7 @@ export const userRegister = createAsyncThunk(
 // === Current User ===
 export const getCurrentUser = createAsyncThunk(
   "auth/getCurrentUser",
-  async ({ rejectWithValue }) => {
+  async (_, { rejectWithValue }) => {
     try {
       const res = await API.get("/auth/current-user");
       if (res?.data) {
@@ -88,6 +88,26 @@ export const getCurrentUser = createAsyncThunk(
       } else {
         return rejectWithValue(error.message);
       }
+    }
+  },
+);
+
+// === Update Profile ===
+export const updateProfile = createAsyncThunk(
+  "auth/updateProfile",
+  async (profileData, { rejectWithValue }) => {
+    try {
+      const { data } = await API.put("/auth/update-profile", profileData);
+      if (data?.success) {
+        toast.success(data.message);
+        return data;
+      }
+      return rejectWithValue(data?.message ?? "Update failed");
+    } catch (error) {
+      const message =
+        error.response?.data?.message ?? error.message ?? "Update failed";
+      toast.error(message);
+      return rejectWithValue(message);
     }
   },
 );

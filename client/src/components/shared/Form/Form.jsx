@@ -17,7 +17,7 @@ export default function Form({ formType, formTitle, formText, submitBtn }) {
   const [selectOpen, setSelectOpen] = useState(false);
 
   return (
-    <div>
+    <div className="w-full max-w-lg mx-auto">
       <form
         onSubmit={(e) => {
           if (formType === "isLogin")
@@ -36,9 +36,9 @@ export default function Form({ formType, formTitle, formText, submitBtn }) {
               phone,
             );
         }}
-        className="flex flex-col p-10 border-2 border-primary-dark rounded-4xl space-y-2"
+        className="flex flex-col w-full p-4 sm:p-6 md:p-10 border-2 border-primary-dark rounded-2xl sm:rounded-4xl space-y-2"
       >
-        <h2 className="text-3xl font-medium tracking-tighter">{formTitle}</h2>
+        <h2 className="text-2xl sm:text-3xl font-medium tracking-tighter">{formTitle}</h2>
         <p className="text-primary-dark/80 text-sm mb-6">{formText}</p>
 
         {/* === Role Dropdown === */}
@@ -111,7 +111,7 @@ export default function Form({ formType, formTitle, formText, submitBtn }) {
 
             case formType === "isRegister": {
               return (
-                <div className="grid grid-cols-2 w-120 gap-x-4 space-y-2">
+                <div className="grid grid-cols-1 sm:grid-cols-2 w-full gap-x-4 gap-y-2">
                   {(role === "admin" || role === "donor") && (
                     <InputType
                       labelFor={"forName"}

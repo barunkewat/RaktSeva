@@ -54,6 +54,10 @@ const userSchema = new mongoose.Schema(
       type: String,
       required: [true, "Phone number is required"],
     },
+    bloodGroup: {
+      type: String,
+      enum: ["O+", "O-", "A+", "A-", "B+", "B-", "AB+", "AB-"],
+    },
   },
   { timestamps: true },
 );

@@ -1,5 +1,6 @@
 import { useEffect, useState } from "react";
 import Layout from "../../components/shared/Layout/Layout";
+import TableWrapper from "../../components/shared/TableWrapper";
 import API from "../../services/API";
 import { RiDeleteBin6Line } from "react-icons/ri";
 
@@ -37,8 +38,8 @@ export default function DonorList() {
 
   return (
     <Layout>
-      <div className="w-full overflow-x-auto">
-        <table className="w-full">
+      <TableWrapper>
+        <table className="w-full text-sm">
           <thead className="bg-primary-red text-primary-light">
             <tr>
               <th className="p-3">#</th>
@@ -140,7 +141,7 @@ export default function DonorList() {
             )}
           </tbody>
         </table>
-      </div>
+      </TableWrapper>
     </Layout>
   );
 }

@@ -49,7 +49,7 @@ export default function Modal({ isOpen, onClose }) {
 
   return (
     <div
-      className={`fixed inset-0 z-50 flex items-start justify-center pt-15 px-4
+      className={`fixed inset-0 z-50 flex items-start sm:items-center justify-center pt-16 sm:pt-15 px-4 pb-4 overflow-y-auto
         bg-primary-light/20 backdrop-blur-xs transition-opacity duration-280
         ${isClosing ? "opacity-0" : "opacity-100"}`}
       onClick={(e) => e.target === e.currentTarget && handleClose()}
@@ -77,9 +77,10 @@ export default function Modal({ isOpen, onClose }) {
           </button>
         </div>
 
-        <div className="p-6 space-y-3">
-          <div className="flex items-center gap-3">
-            Inventory Type: &nbsp;
+        <div className="p-4 sm:p-6 space-y-3">
+          <div className="flex flex-col sm:flex-row sm:items-center gap-2 sm:gap-3">
+            <span className="text-sm font-medium shrink-0">Inventory Type:</span>
+            <div className="flex flex-wrap items-center gap-3">
             <div className="flex items-center gap-1">
               <input
                 id="in"
@@ -106,6 +107,7 @@ export default function Modal({ isOpen, onClose }) {
               <label htmlFor="out" className="cursor-pointer">
                 OUT
               </label>
+            </div>
             </div>
           </div>
 

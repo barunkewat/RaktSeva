@@ -1,5 +1,6 @@
 import { useEffect, useState } from "react";
 import Layout from "../../components/shared/Layout/Layout";
+import TableWrapper from "../../components/shared/TableWrapper";
 import API from "../../services/API";
 import { toast } from "react-toastify";
 
@@ -77,9 +78,12 @@ export default function Analytics() {
         })}
       </div>
 
-      <div className="w-full">
-        <h1 className="text-4xl font-semibold tracking-tight mt-10 mb-3">Recent Blood Transactions</h1>
-        <table className="w-full">
+      <div className="w-full mt-8 sm:mt-10">
+        <h1 className="text-2xl sm:text-3xl md:text-4xl font-semibold tracking-tight mb-3">
+          Recent Blood Transactions
+        </h1>
+        <TableWrapper>
+        <table className="w-full text-sm">
           <thead className="bg-primary-red text-primary-light">
             <tr>
               <th className="p-3">#</th>
@@ -161,6 +165,7 @@ export default function Analytics() {
             )}
           </tbody>
         </table>
+        </TableWrapper>
       </div>
     </Layout>
   );

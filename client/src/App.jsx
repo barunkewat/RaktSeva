@@ -1,6 +1,12 @@
 import { ReactLenis } from "lenis/react";
 import { BrowserRouter, Route, Routes } from "react-router-dom";
 import HomePage from "./pages/HomePage";
+import Landing from "./pages/Landing";
+import About from "./pages/About";
+import Help from "./pages/Help";
+import Contact from "./pages/Contact";
+import BloodRoute from "./components/Routes/BloodRoute";
+import AuthBootstrap from "./components/Routes/AuthBootstrap";
 import Register from "./pages/auth/Register";
 import Login from "./pages/auth/Login";
 import { Provider } from "react-redux";
@@ -18,6 +24,7 @@ import Analytics from "./pages/Dashboard/Analytics";
 import DonorList from "./pages/Admin/DonorList";
 import HospitalList from "./pages/Admin/HospitalList";
 import OrganisationList from "./pages/Admin/OrganisationList";
+import Settings from "./pages/Settings";
 
 export default function App() {
   return (
@@ -33,6 +40,7 @@ export default function App() {
         }}
       >
         <BrowserRouter>
+          <AuthBootstrap />
           <ToastContainer
             position="top-right"
             autoClose={3000}
@@ -60,8 +68,13 @@ export default function App() {
                 </PublicRoute>
               }
             />
+            <Route path="/" element={<Landing />} />
+            <Route path="/about" element={<About />} />
+            <Route path="/help" element={<Help />} />
+            <Route path="/contact" element={<Contact />} />
+            <Route path="/blood" element={<BloodRoute />} />
             <Route
-              path="/"
+              path="/inventory"
               element={
                 <ProtectedRoute>
                   <HomePage />
@@ -121,6 +134,14 @@ export default function App() {
               element={
                 <ProtectedRoute>
                   <Analytics />
+                </ProtectedRoute>
+              }
+            />
+            <Route
+              path="/settings"
+              element={
+                <ProtectedRoute>
+                  <Settings />
                 </ProtectedRoute>
               }
             />

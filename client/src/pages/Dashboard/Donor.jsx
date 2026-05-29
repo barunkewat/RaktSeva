@@ -1,5 +1,6 @@
 import { useState, useEffect } from "react";
 import Layout from "../../components/shared/Layout/Layout";
+import TableWrapper from "../../components/shared/TableWrapper";
 import API from "../../services/API";
 
 export default function Donor() {
@@ -22,8 +23,8 @@ export default function Donor() {
   }, []);
   return (
     <Layout>
-      <div className="w-full">
-        <table className="w-full">
+      <TableWrapper>
+        <table className="w-full text-sm">
           <thead className="bg-primary-red text-primary-light">
             <tr>
               <th className="p-3">#</th>
@@ -79,7 +80,7 @@ export default function Donor() {
             )}
           </tbody>
         </table>
-      </div>
+      </TableWrapper>
     </Layout>
   );
 }

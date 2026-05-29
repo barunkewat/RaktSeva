@@ -3,6 +3,7 @@ import { useSelector } from "react-redux";
 import { useNavigate } from "react-router-dom";
 import { toast } from "react-toastify";
 import Loader from "../components/shared/Loader";
+import TableWrapper from "../components/shared/TableWrapper";
 import Layout from "../components/shared/Layout/Layout";
 import Modal from "../components/shared/Modal/Modal";
 import API from "../services/API";
@@ -40,26 +41,36 @@ export default function HomePage() {
         <Loader />
       ) : (
         <>
-        <div className="flex justify-end items-center mb-4">
-            <button
-              onClick={() => setIsOpen(true)}
-              className="px-4 py-2 text-white font-medium bg-primary-red rounded-full cursor-pointer"
-            >
-              + Add Inventory
-            </button>
-        </div>
+          <div className="mb-6">
+            <h1 className="text-2xl sm:text-3xl font-bold text-primary-dark tracking-tight">
+              Blood availability
+            </h1>
+            <p className="mt-2 text-sm sm:text-base text-primary-dark/60">
+              View current blood stock to donate or request blood for patients.
+            </p>
+          </div>
 
-          {/* Table */}
-          <div className="w-full h-screen">
-            <table className="w-full">
+          {user?.role === "organisation" && (
+            <div className="flex justify-end items-center mb-4">
+              <button
+                onClick={() => setIsOpen(true)}
+                className="w-full sm:w-auto px-4 py-2 text-sm sm:text-base text-white font-medium bg-primary-red rounded-full cursor-pointer"
+              >
+                + Add Inventory
+              </button>
+            </div>
+          )}
+
+          <TableWrapper>
+            <table className="w-full text-sm">
               <thead className="bg-primary-red text-primary-light">
                 <tr>
-                  <th className="p-3">#</th>
-                  <th className="p-3">Blood Group</th>
-                  <th className="p-3">Inventory Type</th>
-                  <th className="p-3">Quantity</th>
-                  <th className="p-3">Donor Email</th>
-                  <th className="p-3">Date & Time</th>
+                  <th className="p-2 sm:p-3 whitespace-nowrap">#</th>
+                  <th className="p-2 sm:p-3 whitespace-nowrap">Blood Group</th>
+                  <th className="p-2 sm:p-3 whitespace-nowrap">Inventory Type</th>
+                  <th className="p-2 sm:p-3 whitespace-nowrap">Quantity</th>
+                  <th className="p-2 sm:p-3 whitespace-nowrap">Donor Email</th>
+                  <th className="p-2 sm:p-3 whitespace-nowrap">Date & Time</th>
                 </tr>
               </thead>
 
@@ -122,14 +133,14 @@ export default function HomePage() {
                   ))
                 ) : (
                   <tr>
-                    <td className="p-4 text-center text-primary-dark/50">
+                    <td colSpan={6} className="p-4 text-center text-primary-dark/50">
                       No records found
                     </td>
                   </tr>
                 )}
               </tbody>
             </table>
-          </div>
+          </TableWrapper>
 
           <Modal isOpen={isOpen} onClose={() => setIsOpen(false)} />
         </>
