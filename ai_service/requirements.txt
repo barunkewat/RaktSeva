@@ -1,0 +1,15 @@
+# RaktSeva AI Blood Demand Forecasting — Python dependencies
+# Install with:  pip install -r requirements.txt
+#
+# Recommended interpreter: Python 3.10 – 3.12 (TensorFlow does not yet ship
+# wheels for every 3.13 platform). On Apple Silicon you may swap
+# `tensorflow` for `tensorflow-macos` if the default wheel is unavailable.
+
+tensorflow>=2.16,<2.20
+pandas>=2.2
+numpy>=1.26,<3
+scikit-learn>=1.4
+fastapi>=0.111
+uvicorn[standard]>=0.30
+matplotlib>=3.8
+apscheduler>=3.10   # optional: enables automatic periodic retraining
