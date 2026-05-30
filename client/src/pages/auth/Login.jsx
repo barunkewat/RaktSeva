@@ -8,9 +8,7 @@ export default function Login() {
   const { loading, error } = useSelector((state) => state.auth);
 
   useEffect(() => {
-    if (error) {
-      toast.error(error);
-    }
+    if (error) toast.error(error);
   }, [error]);
 
   return (
@@ -18,7 +16,7 @@ export default function Login() {
       {loading ? (
         <Loader />
       ) : (
-        <div className="h-[80vh] flex justify-center items-center tracking-tight">
+        <div className="min-h-[calc(100vh-64px)] flex justify-center items-start sm:items-center px-4 py-10 tracking-tight">
           <Form
             formType={"isLogin"}
             formTitle={"Sign in to your account"}

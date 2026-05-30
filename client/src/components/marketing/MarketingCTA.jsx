@@ -15,23 +15,27 @@ export default function MarketingCTA({
   const isLoggedIn = useIsLoggedIn();
   const dashboardPath = getRoleHomePath(user?.role);
 
+  // Mobile: column + center. Desktop: row.
   const layoutClass =
     layout === "column"
-      ? "flex flex-col gap-3"
-      : "flex flex-col sm:flex-row flex-wrap gap-3 sm:gap-4";
+      ? "flex flex-col items-center gap-3"
+      : "flex flex-col items-center gap-3 sm:flex-row sm:items-center sm:flex-wrap sm:gap-4";
+
+  const btnSolid =
+    "w-full max-w-xs sm:w-auto sm:max-w-none text-center px-6 py-3 rounded-full font-semibold transition-opacity";
 
   if (isLoggedIn) {
     return (
       <div className={`${layoutClass} ${className}`}>
         <Link
           to="/blood"
-          className="w-full sm:w-auto text-center px-6 py-3 rounded-full bg-primary-red text-primary-light font-semibold hover:opacity-90 transition-opacity"
+          className={`${btnSolid} bg-primary-red text-primary-light hover:opacity-90`}
         >
           View blood availability
         </Link>
         <Link
           to={dashboardPath}
-          className="w-full sm:w-auto text-center px-6 py-3 rounded-full bg-primary-green text-primary-light font-semibold hover:opacity-90 transition-opacity"
+          className={`${btnSolid} bg-primary-green text-primary-light hover:opacity-90`}
         >
           Go to dashboard
         </Link>
@@ -43,14 +47,14 @@ export default function MarketingCTA({
     <div className={`${layoutClass} ${className}`}>
       <Link
         to={primaryGuestTo}
-        className="w-full sm:w-auto text-center px-6 py-3 rounded-full bg-primary-red text-primary-light font-semibold hover:opacity-90 transition-opacity"
+        className={`${btnSolid} bg-primary-red text-primary-light hover:opacity-90`}
       >
         {primaryLabel}
       </Link>
       {secondaryLabel && secondaryTo && (
         <Link
           to={secondaryTo}
-          className="w-full sm:w-auto text-center px-6 py-3 rounded-full border-2 border-primary-green text-primary-green font-semibold hover:bg-primary-green/10 transition-colors"
+          className={`${btnSolid} border-2 border-primary-green text-primary-green hover:bg-primary-green/10`}
         >
           {secondaryLabel}
         </Link>
@@ -58,4 +62,3 @@ export default function MarketingCTA({
     </div>
   );
 }
-

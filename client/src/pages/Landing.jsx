@@ -1,7 +1,9 @@
 import { Link } from "react-router-dom";
+
 import PublicLayout from "../components/shared/Layout/PublicLayout";
 import MarketingCTA from "../components/marketing/MarketingCTA";
 import { images } from "../components/marketing/marketingImages";
+
 import { BiSolidDonateBlood } from "react-icons/bi";
 import { MdOutlineBloodtype, MdLocalHospital } from "react-icons/md";
 import { GoOrganization } from "react-icons/go";
@@ -40,10 +42,12 @@ export default function Landing() {
   return (
     <PublicLayout>
       {/* Hero */}
-      <section className="relative h-screen overflow-hidden">
+      <section className="relative min-h-fit">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 py-10 sm:py-16 lg:py-24">
           <div className="grid grid-cols-1 lg:grid-cols-2 gap-8 lg:gap-12 items-center">
-            <div className="order-2 lg:order-1">
+
+            {/* Left: Text + CTA */}
+            <div className="order-1 lg:order-1">
               <p className="text-xs sm:text-sm font-semibold uppercase tracking-wider text-primary-green mb-3">
                 Blood donation, simplified
               </p>
@@ -65,7 +69,8 @@ export default function Landing() {
               />
             </div>
 
-            <div className="order-1 lg:order-2 relative pb-4 sm:pb-0">
+            {/* Right: Image + floating badge */}
+            <div className="order-2 lg:order-2 relative pb-4 lg:pb-16">
               <div className="rounded-2xl sm:rounded-3xl overflow-hidden shadow-2xl aspect-video sm:aspect-4/3">
                 <img
                   src={images.hero}
@@ -73,11 +78,12 @@ export default function Landing() {
                   className="w-full h-full object-cover"
                 />
               </div>
-              <div className="mt-4 sm:mt-0 sm:absolute sm:-bottom-4 sm:-left-4 md:-bottom-6 md:-left-6 bg-primary-light rounded-2xl shadow-lg p-3 sm:p-4 border border-primary-green/20 max-w-full">
+
+              <div className="mt-4 lg:mt-0 lg:absolute lg:-bottom-4 lg:-left-4 xl:-bottom-6 xl:-left-6 bg-primary-light rounded-2xl shadow-lg p-3 sm:p-4 border border-primary-green/20 max-w-full">
                 <div className="flex items-center gap-2 sm:gap-3">
                   <MdOutlineBloodtype
                     size={28}
-                    className="text-primary-red shrink-0 sm:w-8 sm:h-8"
+                    className="text-primary-red shrink-0"
                   />
                   <div className="min-w-0">
                     <p className="text-lg sm:text-2xl font-bold text-primary-dark">
@@ -90,6 +96,7 @@ export default function Landing() {
                 </div>
               </div>
             </div>
+
           </div>
         </div>
       </section>
@@ -161,14 +168,14 @@ export default function Landing() {
       <section className="py-16 bg-primary-green/5">
         <div className="max-w-7xl mx-auto px-4 sm:px-6">
           <div className="grid grid-cols-1 lg:grid-cols-2 gap-8 lg:gap-12 items-center">
-            <div className="order-1 lg:order-0 rounded-2xl overflow-hidden shadow-lg aspect-video sm:aspect-4/3">
+            <div className="order-1 rounded-2xl overflow-hidden shadow-lg aspect-video sm:aspect-4/3">
               <img
                 src={images.community}
                 alt="Community and volunteers united for a cause"
                 className="w-full h-full object-cover"
               />
             </div>
-            <div className="order-2 lg:order-0">
+            <div className="order-2">
               <h2 className="text-2xl sm:text-3xl font-bold text-primary-dark">
                 How it works
               </h2>
@@ -195,7 +202,7 @@ export default function Landing() {
 
       {/* CTA */}
       <section className="py-16 sm:py-20">
-        <div className="max-w-3xl mx-auto px-4 sm:px-6 text-center">
+        <div className="max-w-3xl flex flex-col justify-center items-center mx-auto px-4 sm:px-6 text-center">
           <h2 className="text-3xl font-bold text-primary-dark">
             Ready to make a difference?
           </h2>
@@ -209,7 +216,7 @@ export default function Landing() {
             secondaryLabel="Need help now?"
             secondaryTo="/help"
             layout="row"
-            className="mt-8 justify-center"
+            className="mt-8"
           />
         </div>
       </section>
