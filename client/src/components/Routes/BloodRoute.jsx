@@ -1,4 +1,3 @@
-import { Navigate } from "react-router-dom";
 import ProtectedRoute from "./ProtectedRoute";
 import HomePage from "../../pages/HomePage";
 import DonateBlood from "../../pages/DonateBlood";

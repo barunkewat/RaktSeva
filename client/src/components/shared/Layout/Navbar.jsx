@@ -1,7 +1,8 @@
 import { useState, useRef, useEffect } from "react";
 import { NavLink, useNavigate } from "react-router-dom";
 import { useLenis } from "lenis/react";
-import { useSelector } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
+import { logout } from "../../../redux/features/auth/authSlice";
 
 import { BiSolidDonateBlood } from "react-icons/bi";
 
@@ -86,6 +87,7 @@ function HamburgerButton({ open, onClick, className = "" }) {
 }
 
 export default function Navbar() {
+  const dispatch = useDispatch();
   const [scrolled, setScrolled] = useState(false);
   const [profileOpen, setProfileOpen] = useState(false);
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
@@ -130,8 +132,10 @@ export default function Navbar() {
   }, []);
 
   const handleLogout = () => {
+    dispatch(logout());
     localStorage.clear();
-    navigate("/login");
+    setProfileOpen(false);
+    navigate("/login", { replace: true });
   };
 
   return (
@@ -278,23 +282,33 @@ export default function Navbar() {
 
                       return (
                         <NavLink
-                          key={item.to}
+                          key={`${role}-${item.to}`}
                           to={item.to}
                           onClick={() => setProfileOpen(false)}
                           onMouseEnter={() => setHoveredItem(item.to)}
                           onMouseLeave={() => setHoveredItem(null)}
-                          className="flex items-center gap-3 px-4 py-2 text-sm font-semibold text-primary-dark/80 hover:bg-primary-green/10 hover:text-primary-green transition-colors duration-150"
+                          className={({ isActive }) =>
+                            `flex items-center gap-3 px-4 py-2 text-sm font-semibold transition-colors duration-150 ${
+                              isActive
+                                ? "bg-primary-green/10 text-primary-green"
+                                : "text-primary-dark/80 hover:bg-primary-green/10 hover:text-primary-green"
+                            }`
+                          }
                         >
-                          <Icon
-                            size={16}
-                            className={`transition-colors duration-150 ${
-                              hoveredItem === item.to
-                                ? "text-primary-green"
-                                : ""
-                            }`}
-                          />
+                          {({ isActive }) => (
+                            <>
+                              <Icon
+                                size={16}
+                                className={`transition-colors duration-150 ${
+                                  isActive || hoveredItem === item.to
+                                    ? "text-primary-green"
+                                    : ""
+                                }`}
+                              />
 
-                          {item.label}
+                              {item.label}
+                            </>
+                          )}
                         </NavLink>
                       );
                     })}
@@ -372,14 +386,14 @@ export default function Navbar() {
 
                   return (
                     <NavLink
-                      key={item.to}
+                      key={`${role}-${item.to}`}
                       to={item.to}
                       onClick={() => setMobileMenuOpen(false)}
                       className={({ isActive }) =>
                         `flex items-center gap-3 p-3 rounded-xl text-sm font-medium transition-colors duration-200 ${
                           isActive
-                            ? "text-primary-green"
-                            : "text-primary-dark/50"
+                            ? "bg-primary-green/10 text-primary-green"
+                            : "text-primary-dark/50 hover:bg-primary-green/10 hover:text-primary-green"
                         }`
                       }
                     >

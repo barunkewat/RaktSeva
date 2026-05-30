@@ -1,23 +1,71 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { useSelector } from "react-redux";
 import { FiChevronDown } from "react-icons/fi";
 import { RxCross2 } from "react-icons/rx";
 import InputType from "../Form/InputType";
 import API from "../../../services/API";
 
-export default function Modal({ isOpen, onClose }) {
+export default function Modal({ isOpen, onClose, onSuccess }) {
   const [isClosing, setIsClosing] = useState(false);
   const [inventoryType, setInventoryType] = useState("in");
   const [bloodGroup, setBloodGroup] = useState("");
   const [quantity, setQuantity] = useState("");
   const [email, setEmail] = useState("");
+  const [organisationId, setOrganisationId] = useState("");
+  const [organisations, setOrganisations] = useState([]);
   const [selectOpen, setSelectOpen] = useState(false);
+  const [orgSelectOpen, setOrgSelectOpen] = useState(false);
   const { user } = useSelector((state) => state.auth);
+
+  const isDonor = user?.role === "donor";
+  const isOrganisation = user?.role === "organisation";
+
+  useEffect(() => {
+    if (isDonor && inventoryType === "in" && user?.email) {
+      setEmail(user.email);
+    }
+    if (isDonor && user?.bloodGroup && !bloodGroup) {
+      setBloodGroup(user.bloodGroup);
+    }
+  }, [isDonor, user?.email, user?.bloodGroup, inventoryType]);
+
+  useEffect(() => {
+    if (!isOpen || !isDonor) return;
+
+    const loadOrganisations = async () => {
+      try {
+        const { data } = await API.get("/inventory/get-all-organisations");
+        if (data?.success) {
+          setOrganisations(data.organisations ?? []);
+        }
+      } catch (error) {
+        console.log(error);
+      }
+    };
+
+    loadOrganisations();
+  }, [isOpen, isDonor]);
+
+  const handleInventoryTypeChange = (type) => {
+    setInventoryType(type);
+    if (isDonor) {
+      setEmail(type === "in" ? (user?.email ?? "") : "");
+    }
+  };
+
+  const resetForm = () => {
+    setBloodGroup("");
+    setQuantity("");
+    setOrganisationId("");
+    setInventoryType("in");
+    setEmail(isDonor ? (user?.email ?? "") : "");
+  };
 
   const handleClose = () => {
     setIsClosing(true);
     setTimeout(() => {
       setIsClosing(false);
+      resetForm();
       onClose();
     }, 280);
   };
@@ -27,21 +75,38 @@ export default function Modal({ isOpen, onClose }) {
       if (!bloodGroup || !quantity) {
         return alert("Please provide all fields!");
       }
+
+      if (isDonor && !organisationId) {
+        return alert("Please select an organisation!");
+      }
+
+      if (!email) {
+        return alert(
+          inventoryType === "out"
+            ? "Please provide hospital email!"
+            : "Please provide donor email!",
+        );
+      }
+
+      const organisation = isDonor ? organisationId : user?._id;
+
       const { data } = await API.post("/inventory/create-inventory", {
         inventoryType,
         bloodGroup,
         email,
         quantity,
-        organisation: user?._id,
+        organisation,
       });
+
       if (data?.success) {
         alert("New Record Created!");
-        window.location.reload();
+        resetForm();
+        onSuccess?.();
+        handleClose();
       }
     } catch (error) {
-      alert(error.response.data.message);
+      alert(error.response?.data?.message ?? "Failed to save record");
       console.log(error);
-      window.location.reload();
     }
   };
 
@@ -49,7 +114,7 @@ export default function Modal({ isOpen, onClose }) {
 
   return (
     <div
-      className={`fixed inset-0 z-50 flex items-start sm:items-center justify-center pt-16 sm:pt-15 px-4 pb-4 overflow-y-auto
+      className={`fixed inset-0 z-50 flex items-start sm:items-center justify-center px-4 pb-4 overflow-y-auto
         bg-primary-light/20 backdrop-blur-xs transition-opacity duration-280
         ${isClosing ? "opacity-0" : "opacity-100"}`}
       onClick={(e) => e.target === e.currentTarget && handleClose()}
@@ -68,6 +133,7 @@ export default function Modal({ isOpen, onClose }) {
             Manage Blood Record
           </h5>
           <button
+            type="button"
             onClick={handleClose}
             className="cursor-pointer w-10 h-10 rounded-xl flex items-center justify-center
               text-primary-dark/50 hover:text-primary-dark hover:bg-primary-dark/10
@@ -78,38 +144,72 @@ export default function Modal({ isOpen, onClose }) {
         </div>
 
         <div className="p-4 sm:p-6 space-y-3">
-          <div className="flex flex-col sm:flex-row sm:items-center gap-2 sm:gap-3">
-            <span className="text-sm font-medium shrink-0">Inventory Type:</span>
-            <div className="flex flex-wrap items-center gap-3">
-            <div className="flex items-center gap-1">
-              <input
-                id="in"
-                type="radio"
-                name="inRadio"
-                value="in"
-                defaultChecked
-                onChange={(e) => setInventoryType(e.target.value)}
-                className="accent-primary-green"
-              />
-              <label htmlFor="in" className="cursor-pointer">
-                IN
-              </label>
+          {(isOrganisation || isDonor) && (
+            <div className="flex flex-col sm:flex-row sm:items-center gap-2 sm:gap-3">
+              <span className="text-sm font-medium shrink-0">Inventory Type:</span>
+              <div className="flex flex-wrap items-center gap-3">
+                <div className="flex items-center gap-1">
+                  <input
+                    id="in"
+                    type="radio"
+                    name="inRadio"
+                    value="in"
+                    checked={inventoryType === "in"}
+                    onChange={(e) => handleInventoryTypeChange(e.target.value)}
+                    className="accent-primary-green"
+                  />
+                  <label htmlFor="in" className="cursor-pointer">
+                    IN
+                  </label>
+                </div>
+                <div className="flex items-center gap-1">
+                  <input
+                    id="out"
+                    type="radio"
+                    name="inRadio"
+                    value="out"
+                    checked={inventoryType === "out"}
+                    onChange={(e) => handleInventoryTypeChange(e.target.value)}
+                    className="accent-primary-green"
+                  />
+                  <label htmlFor="out" className="cursor-pointer">
+                    OUT
+                  </label>
+                </div>
+              </div>
             </div>
-            <div className="flex items-center gap-1">
-              <input
-                id="out"
-                type="radio"
-                name="inRadio"
-                value="out"
-                onChange={(e) => setInventoryType(e.target.value)}
-                className="accent-primary-green"
-              />
-              <label htmlFor="out" className="cursor-pointer">
-                OUT
-              </label>
+          )}
+
+          {isDonor && (
+            <div className="flex flex-col">
+              <label htmlFor="organisationSelect">Select Organisation</label>
+              <div className="relative">
+                <select
+                  id="organisationSelect"
+                  value={organisationId}
+                  onChange={(e) => setOrganisationId(e.target.value)}
+                  onMouseDown={() => setOrgSelectOpen((prev) => !prev)}
+                  onBlur={() => setOrgSelectOpen(false)}
+                  className="w-full appearance-none border border-primary-dark rounded-2xl
+                    px-4 py-2 text-sm text-primary-dark outline-none cursor-pointer"
+                >
+                  <option value="">Select an organisation</option>
+                  {organisations.map((org) => (
+                    <option key={org._id} value={org._id}>
+                      {org.organisationName ?? org.name}
+                    </option>
+                  ))}
+                </select>
+                <span className="flex items-center pointer-events-none absolute inset-y-0 right-4">
+                  <FiChevronDown
+                    className={`text-primary-dark/40 transition-transform duration-200
+                      ${orgSelectOpen ? "rotate-180" : ""}`}
+                    size={14}
+                  />
+                </span>
+              </div>
             </div>
-            </div>
-          </div>
+          )}
 
           <div className="flex flex-col">
             <label htmlFor="bloodGroupSelect">Select Blood Group</label>
@@ -123,9 +223,7 @@ export default function Modal({ isOpen, onClose }) {
                 className="w-full appearance-none border border-primary-dark rounded-2xl
                   px-4 py-2 text-sm text-primary-dark outline-none cursor-pointer"
               >
-                <option defaultValue={"Select a blood group"}>
-                  Select a blood group
-                </option>
+                <option value="">Select a blood group</option>
                 <option value={"O+"}>O+ (O Positive)</option>
                 <option value={"O-"}>O- (O Negative)</option>
                 <option value={"A+"}>A+ (A Positive)</option>
@@ -146,11 +244,12 @@ export default function Modal({ isOpen, onClose }) {
           </div>
 
           <InputType
-            labelText={"Donor Email"}
-            labelFor={"donorEmail"}
+            labelText={inventoryType === "out" ? "Hospital Email" : "Donor Email"}
+            labelFor={"recordEmail"}
             inputType={"email"}
             value={email}
             onChange={(e) => setEmail(e.target.value)}
+            readOnly={isDonor && inventoryType === "in"}
           />
           <InputType
             labelText={"Quantity (mL)"}
@@ -163,6 +262,7 @@ export default function Modal({ isOpen, onClose }) {
 
         <div className="flex justify-end gap-3 px-6 py-5 border-t border-primary-dark/20">
           <button
+            type="button"
             onClick={handleClose}
             className="cursor-pointer text-sm bg-primary-light/50 border border-primary-dark/20
               px-3 py-1 rounded-full hover:bg-primary-dark/10 transition-all duration-200"
@@ -170,6 +270,7 @@ export default function Modal({ isOpen, onClose }) {
             Cancel
           </button>
           <button
+            type="button"
             className="cursor-pointer text-sm bg-primary-green text-primary-light
             hover:bg-primary-green/80 px-3 py-1 rounded-full transition-all duration-200"
             onClick={handleModelSubmit}

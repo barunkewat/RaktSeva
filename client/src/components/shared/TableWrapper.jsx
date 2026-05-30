@@ -3,7 +3,7 @@ export default function TableWrapper({ children, className = "" }) {
     <div
       className={`w-full overflow-x-auto overscroll-x-contain rounded-lg ${className}`}
     >
-      <div className="min-w-[36rem]">{children}</div>
+      <div className="min-w-xl">{children}</div>
     </div>
   );
 }

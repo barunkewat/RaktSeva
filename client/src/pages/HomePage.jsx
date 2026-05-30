@@ -14,14 +14,25 @@ export default function HomePage() {
   const [data, setData] = useState([]);
   const navigate = useNavigate()
 
+  const canAddInventory =
+    user?.role === "organisation" || user?.role === "donor";
+
   // === Get blood records ===
   const getBloodRecords = async () => {
     try {
-      const res = await API.get("/inventory/get-inventory");
+      if (user?.role === "donor") {
+        const res = await API.post("/inventory/get-inventory-hospital", {
+          filters: {},
+        });
+        if (res.data?.success) {
+          setData(res.data.inventory);
+        }
+        return;
+      }
 
+      const res = await API.get("/inventory/get-inventory");
       if (res.data?.success) {
         setData(res.data.inventory);
-        // console.log(res.data.inventory);
       }
     } catch (error) {
       console.log(error);
@@ -30,36 +41,48 @@ export default function HomePage() {
   };
 
   useEffect(() => {
+    if (!user?.role || user.role === "admin") return;
     getBloodRecords();
-  }, []);
+  }, [user?.role]);
+
+  useEffect(() => {
+    if (user?.role === "admin") {
+      navigate("/admin", { replace: true });
+    }
+  }, [user?.role, navigate]);
+
+  useEffect(() => {
+    if (error) {
+      toast.error(error);
+    }
+  }, [error]);
 
   return (
     <Layout>
-      {user?.role === "admin" && navigate("/admin")}
-      {error && toast.error(error)}
       {loading ? (
         <Loader />
       ) : (
         <>
-          <div className="mb-6">
-            <h1 className="text-2xl sm:text-3xl font-bold text-primary-dark tracking-tight">
-              Blood availability
-            </h1>
-            <p className="mt-2 text-sm sm:text-base text-primary-dark/60">
-              View current blood stock to donate or request blood for patients.
-            </p>
-          </div>
+          <div className="mb-6 flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4">
+            <div>
+              <h1 className="text-2xl sm:text-3xl font-bold text-primary-dark tracking-tight">
+                Blood availability
+              </h1>
+              <p className="mt-2 text-sm sm:text-base text-primary-dark/60">
+                View current blood stock to donate or request blood for patients.
+              </p>
+            </div>
 
-          {user?.role === "organisation" && (
-            <div className="flex justify-end items-center mb-4">
+            {canAddInventory && (
               <button
+                type="button"
                 onClick={() => setIsOpen(true)}
-                className="w-full sm:w-auto px-4 py-2 text-sm sm:text-base text-white font-medium bg-primary-red rounded-full cursor-pointer"
+                className="shrink-0 w-full sm:w-auto px-4 py-2 text-sm sm:text-base text-white font-medium bg-primary-red rounded-full cursor-pointer"
               >
                 + Add Inventory
               </button>
-            </div>
-          )}
+            )}
+          </div>
 
           <TableWrapper>
             <table className="w-full text-sm">
@@ -142,7 +165,11 @@ export default function HomePage() {
             </table>
           </TableWrapper>
 
-          <Modal isOpen={isOpen} onClose={() => setIsOpen(false)} />
+          <Modal
+            isOpen={isOpen}
+            onClose={() => setIsOpen(false)}
+            onSuccess={getBloodRecords}
+          />
         </>
       )}
     </Layout>

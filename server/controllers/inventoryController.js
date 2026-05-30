@@ -21,7 +21,8 @@ const createInventoryController = async (req, res) => {
     if (req.body.inventoryType === "out") {
       const requestedBloodGroup = req.body.bloodGroup;
       const requestedQuantityOfBlood = req.body.quantity;
-      const organisation = new mongoose.Types.ObjectId(req.body.userId);
+      const organisationId = req.body.organisation || req.body.userId;
+      const organisation = new mongoose.Types.ObjectId(organisationId);
 
       // === Calculate Blood Quantity ===
       const totalInOfRequestedBloodGroup = await inventoryModel.aggregate([
@@ -215,6 +216,28 @@ const getHospitalController = async (req, res) => {
   }
 };
 
+// === Get all organisations (for donor donation form) ===
+const getAllOrganisationsController = async (req, res) => {
+  try {
+    const organisations = await userModel
+      .find({ role: "organisation" })
+      .select("-password")
+      .sort({ organisationName: 1 });
+    return res.status(200).send({
+      success: true,
+      message: "Organisations fetched successfully",
+      organisations,
+    });
+  } catch (error) {
+    console.log(error);
+    return res.status(500).send({
+      success: false,
+      message: "Error in get all organisations API",
+      error,
+    });
+  }
+};
+
 // === Get organisation profile ===
 const getOrganisationController = async (req, res) => {
   try {
@@ -276,4 +299,5 @@ export {
   getHospitalController,
   getOrganisationController,
   getOrganisationForHospitalController,
+  getAllOrganisationsController,
 };

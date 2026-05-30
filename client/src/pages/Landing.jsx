@@ -40,7 +40,7 @@ export default function Landing() {
   return (
     <PublicLayout>
       {/* Hero */}
-      <section className="relative overflow-hidden">
+      <section className="relative h-screen overflow-hidden">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 py-10 sm:py-16 lg:py-24">
           <div className="grid grid-cols-1 lg:grid-cols-2 gap-8 lg:gap-12 items-center">
             <div className="order-2 lg:order-1">
@@ -161,14 +161,14 @@ export default function Landing() {
       <section className="py-16 bg-primary-green/5">
         <div className="max-w-7xl mx-auto px-4 sm:px-6">
           <div className="grid grid-cols-1 lg:grid-cols-2 gap-8 lg:gap-12 items-center">
-            <div className="order-1 lg:order-none rounded-2xl overflow-hidden shadow-lg aspect-video sm:aspect-4/3">
+            <div className="order-1 lg:order-0 rounded-2xl overflow-hidden shadow-lg aspect-video sm:aspect-4/3">
               <img
                 src={images.community}
                 alt="Community and volunteers united for a cause"
                 className="w-full h-full object-cover"
               />
             </div>
-            <div className="order-2 lg:order-none">
+            <div className="order-2 lg:order-0">
               <h2 className="text-2xl sm:text-3xl font-bold text-primary-dark">
                 How it works
               </h2>

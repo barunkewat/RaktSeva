@@ -1,6 +1,7 @@
 import { createAsyncThunk } from "@reduxjs/toolkit";
 import API from "../services/API";
 import { toast } from "react-toastify";
+import { getRoleHomePath } from "../components/shared/Layout/Menus/userMenu";
 
 // === Login ===
 export const userLogin = createAsyncThunk(
@@ -12,8 +13,9 @@ export const userLogin = createAsyncThunk(
       if (data.success) {
         localStorage.setItem("token", data.token);
         toast.success(data.message);
+        const homePath = getRoleHomePath(data.user?.role);
         setTimeout(() => {
-          window.location.replace("/blood");
+          window.location.replace(homePath);
         }, 2000);
       }
       return data;

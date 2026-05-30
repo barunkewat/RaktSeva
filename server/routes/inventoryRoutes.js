@@ -9,6 +9,7 @@ import {
   getHospitalController,
   getOrganisationController,
   getOrganisationForHospitalController,
+  getAllOrganisationsController,
 } from "../controllers/inventoryController.js";
 
 const router = express.Router();
@@ -34,6 +35,9 @@ router.get("/get-hospitals", authMiddleware, getHospitalController);
 
 // === Get organisation records ===
 router.get("/get-organisations", authMiddleware, getOrganisationController);
+
+// === Get all organisations (donor dropdown) ===
+router.get("/get-all-organisations", authMiddleware, getAllOrganisationsController);
 
 // === Get organisation records ===
 router.get("/get-organisation-for-hospital", authMiddleware, getOrganisationForHospitalController);
