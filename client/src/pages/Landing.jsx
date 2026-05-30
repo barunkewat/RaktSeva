@@ -65,6 +65,7 @@ export default function Landing() {
                 primaryGuestTo="/register"
                 secondaryLabel="Donate blood"
                 secondaryTo="/blood"
+                align="left"
                 className="mt-6 sm:mt-8"
               />
             </div>
@@ -202,7 +203,7 @@ export default function Landing() {
 
       {/* CTA */}
       <section className="py-16 sm:py-20">
-        <div className="max-w-3xl flex flex-col justify-center items-center mx-auto px-4 sm:px-6 text-center">
+        <div className="w-full flex flex-col justify-center items-center mx-auto px-4 sm:px-6 text-center">
           <h2 className="text-3xl font-bold text-primary-dark">
             Ready to make a difference?
           </h2>
@@ -216,7 +217,7 @@ export default function Landing() {
             secondaryLabel="Need help now?"
             secondaryTo="/help"
             layout="row"
-            className="mt-8"
+            className="mt-8 w-full"
           />
         </div>
       </section>

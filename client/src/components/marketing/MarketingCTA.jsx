@@ -9,17 +9,22 @@ export default function MarketingCTA({
   secondaryLabel,
   secondaryTo,
   layout = "row",
+  align = "center",
   className = "",
 }) {
   const { user } = useSelector((state) => state.auth);
   const isLoggedIn = useIsLoggedIn();
   const dashboardPath = getRoleHomePath(user?.role);
 
-  // Mobile: column + center. Desktop: row.
+  const alignClass =
+    align === "left"
+      ? "sm:items-start sm:justify-start"
+      : "sm:items-center sm:justify-center";
+
   const layoutClass =
     layout === "column"
       ? "flex flex-col items-center gap-3"
-      : "flex flex-col items-center gap-3 sm:flex-row sm:items-center sm:flex-wrap sm:gap-4";
+      : `flex flex-col items-center gap-3 sm:flex-row sm:flex-wrap sm:gap-4 ${alignClass}`;
 
   const btnSolid =
     "w-full max-w-xs sm:w-auto sm:max-w-none text-center px-6 py-3 rounded-full font-semibold transition-opacity";
