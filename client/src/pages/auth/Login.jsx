@@ -18,7 +18,7 @@ export default function Login() {
       {loading ? (
         <Loader />
       ) : (
-        <div className="min-h-[calc(100dvh-4rem)] flex justify-center items-center px-4 py-8 tracking-tight">
+        <div className="h-[80vh] flex justify-center items-center tracking-tight">
           <Form
             formType={"isLogin"}
             formTitle={"Sign in to your account"}

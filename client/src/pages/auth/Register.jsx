@@ -11,7 +11,7 @@ export default function Register() {
       {loading ? (
         <Loader />
       ) : (
-        <div className="min-h-[calc(100dvh-4rem)] flex justify-center items-center px-4 py-8 tracking-tight">
+        <div className="h-[80vh] flex justify-center items-center px-4 py-8 tracking-tight">
           <Form
             formType={"isRegister"}
             formTitle={"Create your new account"}
