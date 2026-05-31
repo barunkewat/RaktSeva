@@ -1,7 +1,7 @@
 import axios from "axios";
 
 // === AI service base URL (FastAPI). Override via AI_SERVICE_URL in .env ===
-const AI_SERVICE_URL = process.env.AI_SERVICE_URL || "http://localhost:8000";
+const AI_SERVICE_URL = process.env.AI_SERVICE_URL || "http://localhost:8080";
 
 // Shared axios client for the Python forecasting service.
 const aiClient = axios.create({

@@ -59,7 +59,7 @@ export default function MarketingCTA({
       {secondaryLabel && secondaryTo && (
         <Link
           to={secondaryTo}
-          className={`${btnSolid} border-2 border-primary-green text-primary-green hover:bg-primary-green/10`}
+          className={`${btnSolid} bg-primary-green text-primary-light hover:bg-primary-green/90`}
         >
           {secondaryLabel}
         </Link>

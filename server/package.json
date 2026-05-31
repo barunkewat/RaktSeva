@@ -13,7 +13,7 @@
   "author": "RaktSeva",
   "license": "ISC",
   "dependencies": {
-    "axios": "^1.7.2",
+    "axios": "^1.16.1",
     "bcryptjs": "^2.4.3",
     "concurrently": "^8.2.2",
     "cors": "^2.8.5",
