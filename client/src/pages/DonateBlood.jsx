@@ -37,7 +37,7 @@ export default function DonateBlood() {
 
       <section className="max-w-7xl mx-auto px-4 sm:px-6 py-10 sm:py-16">
         <div className="grid grid-cols-1 lg:grid-cols-2 gap-8 lg:gap-12">
-          <div>
+          <div className="md:flex md:flex-col md:justify-center md:items-start">
             <h2 className="text-2xl font-bold text-primary-dark">
               Why donate through RaktSeva?
             </h2>
