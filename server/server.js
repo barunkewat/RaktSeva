@@ -10,6 +10,7 @@ import authRoutes from "./routes/authRoutes.js";
 import inventory from "./routes/inventoryRoutes.js";
 import analyticsRoutes from "./routes/analyticsRoutes.js";
 import adminRoutes from "./routes/adminRoutes.js";
+import forecastRoutes from "./routes/forecastRoutes.js";
 
 // === dotenv config ===
 dotenv.config();
@@ -34,6 +35,7 @@ app.use("/api/v1/auth", authRoutes);
 app.use("/api/v1/inventory", inventory);
 app.use("/api/v1/analytics", analyticsRoutes);
 app.use("/api/v1/admin", adminRoutes);
+app.use("/api/v1/forecast", forecastRoutes);
 
 // === Serve frontend static files ===
 app.use(express.static(path.join(__dirname, "../client/dist")));

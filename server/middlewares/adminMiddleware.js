@@ -5,9 +5,9 @@ const adminMiddleware = async (req, res, next) => {
     const user = await userModel.findById(req.body.userId);
     // === Check Admin ===
     if (user?.role !== "admin") {
-      return req.status(401).send({
+      return res.status(401).send({
         success: false,
-        message: "Auth Failed!",
+        message: "Auth Failed! Admin access required.",
       });
     } else {
       next();

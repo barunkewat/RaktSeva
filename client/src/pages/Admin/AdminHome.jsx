@@ -10,6 +10,7 @@ import { GoOrganization } from "react-icons/go";
 import { SiGoogleanalytics } from "react-icons/si";
 import { IoSettingsOutline } from "react-icons/io5";
 import { MdOutlineBloodtype, MdArrowOutward } from "react-icons/md";
+import { TbChartLine } from "react-icons/tb";
 import { HiOutlineUsers } from "react-icons/hi2";
 
 const quickActions = [
@@ -33,6 +34,13 @@ const quickActions = [
     label: "Organisation List",
     description: "Manage blood banks and NGOs",
     accent: "bg-primary-green/15 border-primary-green/25 text-primary-green",
+  },
+  {
+    to: "/forecast",
+    icon: TbChartLine,
+    label: "Demand Forecast",
+    description: "AI-powered 7-day blood demand predictions & shortage alerts",
+    accent: "bg-primary-blue/15 border-primary-blue/25 text-primary-blue",
   },
   {
     to: "/analytics",
