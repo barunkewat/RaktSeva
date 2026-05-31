@@ -24,6 +24,7 @@ import Analytics from "./pages/Dashboard/Analytics";
 import DonorList from "./pages/Admin/DonorList";
 import HospitalList from "./pages/Admin/HospitalList";
 import OrganisationList from "./pages/Admin/OrganisationList";
+import Forecast from "./pages/Admin/Forecast";
 import Settings from "./pages/Settings";
 
 export default function App() {
@@ -166,6 +167,14 @@ export default function App() {
               element={
                 <ProtectedRoute>
                   <OrganisationList />
+                </ProtectedRoute>
+              }
+            />
+            <Route
+              path="/forecast"
+              element={
+                <ProtectedRoute>
+                  <Forecast />
                 </ProtectedRoute>
               }
             />

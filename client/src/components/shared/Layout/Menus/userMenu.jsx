@@ -5,6 +5,7 @@ import { GoOrganization } from "react-icons/go";
 import { SiGoogleanalytics } from "react-icons/si";
 import { IoSettingsOutline } from "react-icons/io5";
 import { MdHistory } from "react-icons/md";
+import { TbChartLine } from "react-icons/tb";
 
 const sharedItems = [
   { icon: SiGoogleanalytics, label: "Analytics", to: "/analytics" },
@@ -45,6 +46,7 @@ export function getProfileMenuItems(role) {
           label: "Organisation List",
           to: "/organisation-list",
         },
+        { icon: TbChartLine, label: "Demand Forecast", to: "/forecast" },
         ...sharedItems,
       ];
 
